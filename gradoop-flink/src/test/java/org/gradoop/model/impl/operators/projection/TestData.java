@@ -10,24 +10,24 @@ public class TestData {
 
   public static final String PATTERN_2 = "(a)(b)";
 
-  public static final String PATTERN_3 = "(a)-c->(b)";
+  public static final String PATTERN_3 = "(a)-[c]->(b)";
 
   public static final String GRAPH_1 = DATA_GRAPH_VARIABLE +
-    "[" +
-    "(v0:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
+    " {id=1}[" +
+    "(v0:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
     "]";
 
   public static final String GRAPH_2 = DATA_GRAPH_VARIABLE +
-    "[" +
-    "(v0:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
-    "(v1:Person {id=1, sex=\"w\", bindings=\"g1:b\"})" +
+    " {id=1}[" +
+    "(v0:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
+    "(v1:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
     "]";
 
   public static final String GRAPH_3 = DATA_GRAPH_VARIABLE +
-    "[" +
-    "(v0:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
-    "(v1:Person {id=1, sex=\"w\", bindings=\"g1:b\"})" +
-    "(v0)-[e1:married {id=0, bindings=\"g1:c\"}]->(v1)" +
+    " {id=1}[" +
+    "(v0:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
+    "(v1:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
+    "(v0)-[e1:married {id=0, bindings=\"1:c\"}]->(v1)" +
     "]";
 
 }

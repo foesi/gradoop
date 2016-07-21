@@ -52,7 +52,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "SingleVertexPattern0", GRAPH_1, PATTERN_0,
         new String[] {"expected1"},
         "expected1[" +
-        "(v0:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
+        "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
         "]",
         true
       },
@@ -60,7 +60,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "SingleVertexNegPattern0", GRAPH_1, PATTERN_0,
         new String[] {"expected1"},
         "expected1[" +
-          "(:Person {id=1, sex=\"m\", bindings=\"g1:a\"})" +
+          "(:Person {id=1, sex=\"m\", bindings=\"1:a\"})" +
           "]",
         false
       },
@@ -68,8 +68,8 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "TwoVerticesPattern2", GRAPH_2, PATTERN_2,
         new String[] {"expected1"},
         "expected1[" +
-          "(:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
-          "(:Person {id=1, sex=\"w\", bindings=\"g1:b\"})" +
+          "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
+          "(:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
           "]",
         true
       },
@@ -77,8 +77,8 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "TwoVerticesPattern3", GRAPH_2, PATTERN_3,
         new String[] {"expected1"},
         "expected1[" +
-          "(:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
-          "(:Person {id=1, sex=\"w\", bindings=\"g1:b\"})" +
+          "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
+          "(:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
           "]",
         true
       },
@@ -86,9 +86,9 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "TwoVerticesOneEdgePattern3", GRAPH_3, PATTERN_3,
         new String[] {"expected1"},
         "expected1[" +
-          "(v0:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
-          "(v1:Person {id=1, sex=\"w\", bindings=\"g1:b\"})" +
-          "(v0)-[e1:married {id=0, bindings=\"g1:c\"}]->(v1)" +
+          "(v2:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
+          "(v3:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
+          "(v2)-[:married {id=0, bindings=\"g1:c\"}]->(v3)" +
           "]",
         true
       },
@@ -96,9 +96,9 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "TwoVerticesPattern2", GRAPH_1, PATTERN_3,
         new String[] {"expected1"},
         "expected1[" +
-          "(v0:Person {id=0, sex=\"m\", bindings=\"g1:a\"})" +
-          "(v1:Person {id=1})" +
-          "(v0)-->(v1)" +
+          "(v2:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
+          "(v3:Person {id=1})" +
+          "(v2)-->(v3)" +
           "]",
         true
       }
