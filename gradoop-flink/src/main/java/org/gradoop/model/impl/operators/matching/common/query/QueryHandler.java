@@ -512,4 +512,12 @@ public class QueryHandler {
     }
     return cache;
   }
+
+  public Map<String, Vertex> getVertexCache() {
+    return gdlHandler.getVertexCache();
+  }
+
+  public Map<String, Edge> getEdgeCache() {
+    return gdlHandler.getEdgeCache();
+  }
 }
