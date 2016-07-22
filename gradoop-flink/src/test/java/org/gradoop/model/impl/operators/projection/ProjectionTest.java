@@ -88,7 +88,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "expected1[" +
           "(v2:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
           "(v3:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
-          "(v2)-[:married {id=0, bindings=\"g1:c\"}]->(v3)" +
+          "(v2)-[:married {id=0, bindings=\"1:c\"}]->(v3)" +
           "]",
         true
       },
@@ -97,7 +97,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         new String[] {"expected1"},
         "expected1[" +
           "(v2:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
-          "(v3:Person {id=1})" +
+          "(v3)" +
           "(v2)-->(v3)" +
           "]",
         true
