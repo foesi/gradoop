@@ -1,15 +1,22 @@
 package org.gradoop.model.impl.operators.projection;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.gradoop.model.GradoopFlinkTestBase;
+import org.gradoop.model.impl.id.GradoopId;
 import org.gradoop.model.impl.pojo.EdgePojo;
+import org.gradoop.model.impl.pojo.GraphElementPojo;
 import org.gradoop.model.impl.pojo.GraphHeadPojo;
 import org.gradoop.model.impl.pojo.VertexPojo;
+import org.gradoop.model.impl.properties.PropertyValue;
 import org.gradoop.util.FlinkAsciiGraphLoader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import static org.gradoop.model.impl.operators.projection.TestData.*;
 
@@ -107,16 +114,46 @@ public class ProjectionTest extends GradoopFlinkTestBase {
 
   @Test
   public void testGraphElementEquality() throws Exception {
+    final String BINDINGS = "bindings";
+
     FlinkAsciiGraphLoader<GraphHeadPojo, VertexPojo, EdgePojo> loader =
       getLoaderFromString(matchResult);
 
     // append the expected result
     loader.appendToDatabaseFromString(expectedCollection);
 
+    Map<String, GradoopId> graphHeadIds = Maps.newHashMap();
+
+    for (GraphHeadPojo gh : loader.getGraphHeads()) {
+      PropertyValue id = gh.getPropertyValue("id");
+      if (id != null) {
+        graphHeadIds.put(String.valueOf(id.getInt()), gh.getId());
+      }
+    }
+
+    Collection<GraphElementPojo> elements = Lists.newArrayList();
+    elements.addAll(loader.getVertices());
+    elements.addAll(loader.getEdges());
+
+    for (GraphElementPojo e : elements) {
+      String finalBinding = "";
+      PropertyValue bindings = e.getProperties().get(BINDINGS);
+      if (bindings != null) {
+        for (String split : bindings.getString().split(",")) {
+          finalBinding += graphHeadIds.get(split.split(":")[0]).toString();
+          finalBinding += ":";
+          finalBinding += split.split(":")[1];
+          finalBinding += ",";
+        }
+        finalBinding = finalBinding.substring(0, finalBinding.length()-1);
+        e.setProperty(BINDINGS, finalBinding);
+      }
+    }
+
     Projection<GraphHeadPojo, VertexPojo, EdgePojo> projection =
       new Projection<>(
         loader.getGraphCollectionByVariables(TestData.DATA_GRAPH_VARIABLE),
-        productionGraph, config, "bindings");
+        productionGraph, config, BINDINGS);
 
     // execute and validate
     if (positiveTest) {
