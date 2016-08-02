@@ -34,24 +34,21 @@ public class ProjectionTest extends GradoopFlinkTestBase {
 
   private final String expectedCollection;
 
-  private final boolean positiveTest;
 
   public ProjectionTest(String testName, String matchResult,
     String productionGraph, String[] expectedGraphVariables,
-    String expectedCollection, boolean positiveTest) {
     this.testName = testName;
     this.matchResult = matchResult;
     this.productionGraph = productionGraph;
     this.expectedGraphVariables = expectedGraphVariables;
     this.expectedCollection = expectedCollection;
-    this.positiveTest = positiveTest;
   }
 
   @Parameterized.Parameters(name = "{index}: {0}")
   public static Iterable data() {
     return Arrays.asList(new Object[][]{
       {
-        "NoMatchesPattern0", "", PATTERN_0, new String[] {}, "", true
+        "NoMatchesPattern0", "", PATTERN_0, new String[] {}, ""
       },
       {
         "SingleVertexPattern0", GRAPH_1, PATTERN_0,
@@ -66,8 +63,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         new String[] {"expected1"},
         "expected1[" +
           "(:Person {id=1, sex=\"m\", bindings=\"1:a\"})" +
-          "]",
-        false
+          "]" 
       },
       {
         "TwoVerticesPattern2", GRAPH_2, PATTERN_2,
@@ -84,8 +80,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "expected1[" +
           "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
           "(:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
-          "]",
-        true
+          "]" 
       },
       {
         "TwoVerticesOneEdgePattern3", GRAPH_3, PATTERN_3,
@@ -94,8 +89,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
           "(v2:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
           "(v3:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
           "(v2)-[:married {id=0, bindings=\"1:c\"}]->(v3)" +
-          "]",
-        true
+          "]"
       },
       {
         "TwoVerticesPattern2", GRAPH_1, PATTERN_3,
@@ -104,8 +98,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
           "(v2:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
           "(v3)" +
           "(v2)-->(v3)" +
-          "]",
-        true
+          "]"
       }
     });
   }
@@ -152,14 +145,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         productionGraph, config, BINDINGS);
 
     // execute and validate
-    if (positiveTest) {
-      collectAndAssertTrue(projection.execute(null)
-        .equalsByGraphElementData(
-          loader.getGraphCollectionByVariables(expectedGraphVariables)));
-    } else {
-      collectAndAssertFalse(projection.execute(null)
-        .equalsByGraphElementData(
-          loader.getGraphCollectionByVariables(expectedGraphVariables)));
-    }
+    collectAndAssertTrue(projection.execute(null).equalsByGraphElementData(
+      loader.getGraphCollectionByVariables(expectedGraphVariables)));
   }
 }
