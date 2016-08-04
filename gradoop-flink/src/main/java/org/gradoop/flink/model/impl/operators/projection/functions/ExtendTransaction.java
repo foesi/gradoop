@@ -78,10 +78,14 @@ public class ExtendTransaction
       String binding = extractor.getBindings(e)
         .get(transaction.f0.getId().toString());
 
-      if (boundVertexIds.contains(e.getSourceId())
-        && boundVertexIds.contains(e.getTargetId())) {
-        edgeVars.remove(binding);
-        edges.add(e);
+      if (edgeVars.remove(binding)) {
+        if (boundVertexIds.contains(e.getSourceId())
+          && boundVertexIds.contains(e.getTargetId())) {
+          edges.add(e);
+        } else {
+          throw new IllegalStateException("All vertices of reused edges have " +
+            "to be bound.");
+        }
       }
     }
     
