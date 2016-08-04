@@ -20,7 +20,7 @@ package org.gradoop.flink.model.impl.operators.matching.common.query;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.gradoop.util.GConstants;
+import org.gradoop.common.util.GConstants;
 import org.s1ck.gdl.GDLHandler;
 import org.s1ck.gdl.model.Edge;
 import org.s1ck.gdl.model.GraphElement;

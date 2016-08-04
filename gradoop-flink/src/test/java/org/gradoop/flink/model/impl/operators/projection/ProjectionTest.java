@@ -2,14 +2,12 @@ package org.gradoop.flink.model.impl.operators.projection;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.gradoop.model.GradoopFlinkTestBase;
-import org.gradoop.model.impl.id.GradoopId;
-import org.gradoop.model.impl.pojo.EdgePojo;
-import org.gradoop.model.impl.pojo.GraphElementPojo;
-import org.gradoop.model.impl.pojo.GraphHeadPojo;
-import org.gradoop.model.impl.pojo.VertexPojo;
-import org.gradoop.model.impl.properties.PropertyValue;
-import org.gradoop.util.FlinkAsciiGraphLoader;
+import org.gradoop.common.model.impl.id.GradoopId;
+import org.gradoop.common.model.impl.pojo.GraphElement;
+import org.gradoop.common.model.impl.pojo.GraphHead;
+import org.gradoop.common.model.impl.properties.PropertyValue;
+import org.gradoop.flink.model.GradoopFlinkTestBase;
+import org.gradoop.flink.util.FlinkAsciiGraphLoader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -116,26 +114,25 @@ public class ProjectionTest extends GradoopFlinkTestBase {
   public void testGraphElementEquality() throws Exception {
     final String BINDINGS = "bindings";
 
-    FlinkAsciiGraphLoader<GraphHeadPojo, VertexPojo, EdgePojo> loader =
-      getLoaderFromString(matchResult);
+    FlinkAsciiGraphLoader loader = getLoaderFromString(matchResult);
 
     // append the expected result
     loader.appendToDatabaseFromString(expectedCollection);
 
     Map<String, GradoopId> graphHeadIds = Maps.newHashMap();
 
-    for (GraphHeadPojo gh : loader.getGraphHeads()) {
+    for (GraphHead gh : loader.getGraphHeads()) {
       PropertyValue id = gh.getPropertyValue("id");
       if (id != null) {
         graphHeadIds.put(String.valueOf(id.getInt()), gh.getId());
       }
     }
 
-    Collection<GraphElementPojo> elements = Lists.newArrayList();
+    Collection<GraphElement> elements = Lists.newArrayList();
     elements.addAll(loader.getVertices());
     elements.addAll(loader.getEdges());
 
-    for (GraphElementPojo e : elements) {
+    for (GraphElement e : elements) {
       String finalBinding = "";
       PropertyValue bindings = e.getProperties().get(BINDINGS);
       if (bindings != null) {
@@ -150,8 +147,7 @@ public class ProjectionTest extends GradoopFlinkTestBase {
       }
     }
 
-    Projection<GraphHeadPojo, VertexPojo, EdgePojo> projection =
-      new Projection<>(
+    Projection projection = new Projection(
         loader.getGraphCollectionByVariables(TestData.DATA_GRAPH_VARIABLE),
         productionGraph, config, BINDINGS);
 

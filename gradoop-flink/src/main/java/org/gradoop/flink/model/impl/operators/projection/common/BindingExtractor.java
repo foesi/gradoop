@@ -1,7 +1,7 @@
 package org.gradoop.flink.model.impl.operators.projection.common;
 
 import com.google.common.collect.Maps;
-import org.gradoop.model.api.EPGMElement;
+import org.gradoop.common.model.impl.pojo.Element;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class BindingExtractor implements Serializable {
     this.bindingsString = bindingsString;
   }
 
-  public Map<String, String> getBindings(EPGMElement epgmElement) {
+  public Map<String, String> getBindings(Element epgmElement) {
     String propertyString = epgmElement.getProperties().get(bindingsString)
       .getString();
 

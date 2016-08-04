@@ -4,34 +4,28 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.apache.flink.api.java.DataSet;
 import org.apache.log4j.Logger;
+import org.gradoop.flink.model.api.operators.UnaryGraphToCollectionOperator;
+import org.gradoop.flink.model.impl.GraphCollection;
+import org.gradoop.flink.model.impl.GraphTransactions;
+import org.gradoop.flink.model.impl.LogicalGraph;
+import org.gradoop.flink.model.impl.operators.matching.PatternMatching;
+import org.gradoop.flink.model.impl.operators.matching.common.query
+  .QueryHandler;
+import org.gradoop.flink.model.impl.operators.matching.isomorphism
+  .explorative.ExplorativeSubgraphIsomorphism;
 import org.gradoop.flink.model.impl.operators.projection.common
   .BindingExtractor;
-import org.gradoop.model.api.EPGMEdge;
-import org.gradoop.model.api.EPGMGraphHead;
-import org.gradoop.model.api.EPGMVertex;
-import org.gradoop.model.api.operators.UnaryGraphToCollectionOperator;
-import org.gradoop.model.impl.GraphCollection;
-import org.gradoop.model.impl.GraphTransactions;
-import org.gradoop.model.impl.LogicalGraph;
-import org.gradoop.model.impl.operators.matching.PatternMatching;
-import org.gradoop.model.impl.operators.matching.common.query.QueryHandler;
-import org.gradoop.model.impl.operators.matching.isomorphism.explorative
-  .ExplorativeSubgraphIsomorphism;
-import org.gradoop.flink.model.impl.operators.projection.functions.ExtendTransaction;
-import org.gradoop.model.impl.tuples.GraphTransaction;
-import org.gradoop.util.GradoopFlinkConfig;
+import org.gradoop.flink.model.impl.operators.projection.functions
+  .ExtendTransaction;
+import org.gradoop.flink.model.impl.tuples.GraphTransaction;
+import org.gradoop.flink.util.GradoopFlinkConfig;
 
 /**
   * Algorithm for mutating graphs with a given matching and production pattern.
   *
-  * @param <G> EPGM graph head type
-  * @param <V> EPGM vertex type
-  * @param <E> EPGM edge type
-  *
   */
 public class Projection
-  <G extends EPGMGraphHead, V extends EPGMVertex, E extends EPGMEdge>
-  implements UnaryGraphToCollectionOperator<G, V, E> {
+  implements UnaryGraphToCollectionOperator {
 
   /**
    * GDL based query string.)
@@ -57,14 +51,14 @@ public class Projection
   /**
    * GradoopFlinkConfig.
    */
-  private final GradoopFlinkConfig<G, V, E> config;
+  private final GradoopFlinkConfig config;
 
   /**
    * Extractor object for getting bindings from the elements of matching result.
    */
   private final BindingExtractor extractor;
 
-  private GraphCollection<G, V, E> matchResult = null;
+  private GraphCollection matchResult = null;
 
   /**
    * @param queryGraph        GDL queryGraph Graph
@@ -73,7 +67,7 @@ public class Projection
    * @param bindingsString    Property name where to find the variable bindings
    */
   public Projection(final String queryGraph, final String productionPattern,
-    GradoopFlinkConfig<G, V, E> config, String bindingsString)
+    GradoopFlinkConfig config, String bindingsString)
   {
     Preconditions.checkState(!Strings.isNullOrEmpty(queryGraph),
       "Query must not be null or empty");
@@ -87,38 +81,37 @@ public class Projection
     this.extractor = new BindingExtractor(bindingsString);
   }
 
-  protected Projection(final GraphCollection<G, V, E> matchResult,
+  protected Projection(final GraphCollection matchResult,
     final String productionPattern,
-    GradoopFlinkConfig<G, V, E> config, String bindingsString) {
+    GradoopFlinkConfig config, String bindingsString) {
     this("no_pattern", productionPattern, config, bindingsString);
     this.matchResult = matchResult;
   }
 
   @Override
-  public final GraphCollection<G, V, E> execute(
-    final LogicalGraph<G, V, E> graph) {
+  public final GraphCollection execute(final LogicalGraph graph) {
 
-    GraphCollection<G, V, E> matchesCol;
+    GraphCollection matchesCol;
 
     if (matchResult == null) {
-      PatternMatching<G, V, E> matcher =
-        new ExplorativeSubgraphIsomorphism<>(this.query, true);
+      PatternMatching matcher =
+        new ExplorativeSubgraphIsomorphism(this.query, true);
 
       matchesCol = matcher.execute(graph);
     } else {
       matchesCol = matchResult;
     }
 
-    DataSet<GraphTransaction<G, V, E>> matchTrans = matchesCol
+    DataSet<GraphTransaction> matchTrans = matchesCol
       .toTransactions().getTransactions();
 
-    DataSet<GraphTransaction<G, V, E>> transactions = matchTrans
-      .map(new ExtendTransaction<G, V, E>(production, config.getVertexFactory(),
+    DataSet<GraphTransaction> transactions = matchTrans
+      .map(new ExtendTransaction(production, config.getVertexFactory(),
         config.getEdgeFactory(), extractor));
 
 
     return GraphCollection.fromTransactions(
-      new GraphTransactions<>(transactions, config));
+      new GraphTransactions(transactions, config));
   }
 
   @Override
