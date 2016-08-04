@@ -93,14 +93,12 @@ public class ExtendTransaction
       String targetVar = productionHandler.getVertexById(e.getTargetVertexId())
         .getVariable();
 
-      if (vertexVars.contains(sourceVar) || vertexVars.contains(targetVar)) {
-        GradoopId sourceId = vertices.get(sourceVar).getId();
-        GradoopId targetId = vertices.get(targetVar).getId();
+      GradoopId sourceId = vertices.get(sourceVar).getId();
+      GradoopId targetId = vertices.get(targetVar).getId();
 
-        edges.add(edgeFactory.createEdge(e.getLabel(), sourceId, targetId,
-          PropertyList.createFromMap(e.getProperties()),
-          GradoopIdSet.fromExisting(transaction.f0.getId())));
-      }
+      edges.add(edgeFactory.createEdge(e.getLabel(), sourceId, targetId,
+        PropertyList.createFromMap(e.getProperties()),
+        GradoopIdSet.fromExisting(transaction.f0.getId())));
     }
     
     return new GraphTransaction(transaction.f0,
