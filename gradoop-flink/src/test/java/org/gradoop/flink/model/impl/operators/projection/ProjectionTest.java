@@ -56,14 +56,6 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         "expected1[" +
         "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
         "]",
-        true
-      },
-      {
-        "SingleVertexNegPattern0", GRAPH_1, PATTERN_0,
-        new String[] {"expected1"},
-        "expected1[" +
-          "(:Person {id=1, sex=\"m\", bindings=\"1:a\"})" +
-          "]" 
       },
       {
         "TwoVerticesPattern2", GRAPH_2, PATTERN_2,
@@ -72,15 +64,6 @@ public class ProjectionTest extends GradoopFlinkTestBase {
           "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
           "(:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
           "]",
-        true
-      },
-      {
-        "TwoVerticesPattern3", GRAPH_2, PATTERN_3,
-        new String[] {"expected1"},
-        "expected1[" +
-          "(:Person {id=0, sex=\"m\", bindings=\"1:a\"})" +
-          "(:Person {id=1, sex=\"w\", bindings=\"1:b\"})" +
-          "]" 
       },
       {
         "TwoVerticesOneEdgePattern3", GRAPH_3, PATTERN_3,
