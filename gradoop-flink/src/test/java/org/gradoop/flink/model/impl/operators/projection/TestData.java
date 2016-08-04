@@ -1,4 +1,4 @@
-package org.gradoop.model.impl.operators.projection;
+package org.gradoop.flink.model.impl.operators.projection;
 
 public class TestData {
 

@@ -19,4 +19,4 @@
  * A projection operator matches a graph with a given pattern and creates a
  * graph collection with a specific production pattern.
  */
-package org.gradoop.model.impl.operators.projection;
+package org.gradoop.flink.model.impl.operators.projection;

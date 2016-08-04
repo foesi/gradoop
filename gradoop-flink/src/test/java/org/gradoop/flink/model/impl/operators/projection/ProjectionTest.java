@@ -1,4 +1,4 @@
-package org.gradoop.model.impl.operators.projection;
+package org.gradoop.flink.model.impl.operators.projection;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import static org.gradoop.model.impl.operators.projection.TestData.*;
+import static org.gradoop.flink.model.impl.operators.projection.TestData.*;
 
 /**
  * Base class for Pattern Matching Te2sts.

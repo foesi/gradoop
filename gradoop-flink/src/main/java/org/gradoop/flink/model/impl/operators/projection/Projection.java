@@ -1,9 +1,11 @@
-package org.gradoop.model.impl.operators.projection;
+package org.gradoop.flink.model.impl.operators.projection;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.apache.flink.api.java.DataSet;
 import org.apache.log4j.Logger;
+import org.gradoop.flink.model.impl.operators.projection.common
+  .BindingExtractor;
 import org.gradoop.model.api.EPGMEdge;
 import org.gradoop.model.api.EPGMGraphHead;
 import org.gradoop.model.api.EPGMVertex;
@@ -15,8 +17,7 @@ import org.gradoop.model.impl.operators.matching.PatternMatching;
 import org.gradoop.model.impl.operators.matching.common.query.QueryHandler;
 import org.gradoop.model.impl.operators.matching.isomorphism.explorative
   .ExplorativeSubgraphIsomorphism;
-import org.gradoop.model.impl.operators.projection.common.BindingExtractor;
-import org.gradoop.model.impl.operators.projection.functions.ExtendTransaction;
+import org.gradoop.flink.model.impl.operators.projection.functions.ExtendTransaction;
 import org.gradoop.model.impl.tuples.GraphTransaction;
 import org.gradoop.util.GradoopFlinkConfig;
 

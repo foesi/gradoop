@@ -1,4 +1,4 @@
-package org.gradoop.model.impl.operators.projection.common;
+package org.gradoop.flink.model.impl.operators.projection.common;
 
 import com.google.common.collect.Maps;
 import org.gradoop.model.api.EPGMElement;

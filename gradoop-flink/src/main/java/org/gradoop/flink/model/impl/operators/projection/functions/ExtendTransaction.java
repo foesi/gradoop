@@ -1,9 +1,11 @@
-package org.gradoop.model.impl.operators.projection.functions;
+package org.gradoop.flink.model.impl.operators.projection.functions;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
+import org.gradoop.flink.model.impl.operators.projection.common
+  .BindingExtractor;
 import org.gradoop.model.api.EPGMEdge;
 import org.gradoop.model.api.EPGMEdgeFactory;
 import org.gradoop.model.api.EPGMGraphHead;
@@ -12,7 +14,6 @@ import org.gradoop.model.api.EPGMVertexFactory;
 import org.gradoop.model.impl.id.GradoopId;
 import org.gradoop.model.impl.id.GradoopIdSet;
 import org.gradoop.model.impl.operators.matching.common.query.QueryHandler;
-import org.gradoop.model.impl.operators.projection.common.BindingExtractor;
 import org.gradoop.model.impl.properties.PropertyList;
 import org.gradoop.model.impl.tuples.GraphTransaction;
 import org.s1ck.gdl.model.Edge;
