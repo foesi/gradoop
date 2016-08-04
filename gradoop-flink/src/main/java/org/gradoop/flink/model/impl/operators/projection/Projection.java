@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.apache.flink.api.java.DataSet;
 import org.apache.log4j.Logger;
+import org.gradoop.common.model.impl.pojo.Edge;
+import org.gradoop.common.model.impl.pojo.Vertex;
 import org.gradoop.flink.model.api.operators.UnaryGraphToCollectionOperator;
 import org.gradoop.flink.model.impl.GraphCollection;
 import org.gradoop.flink.model.impl.GraphTransactions;
@@ -15,6 +17,9 @@ import org.gradoop.flink.model.impl.operators.matching.isomorphism
   .explorative.ExplorativeSubgraphIsomorphism;
 import org.gradoop.flink.model.impl.operators.projection.common
   .BindingExtractor;
+import org.gradoop.flink.model.impl.operators.projection.functions.BoundEdges;
+import org.gradoop.flink.model.impl.operators.projection.functions
+  .BoundVertices;
 import org.gradoop.flink.model.impl.operators.projection.functions
   .ExtendTransaction;
 import org.gradoop.flink.model.impl.tuples.GraphTransaction;
@@ -102,7 +107,16 @@ public class Projection
       matchesCol = matchResult;
     }
 
-    DataSet<GraphTransaction> matchTrans = matchesCol
+    DataSet<Vertex> boundVertices = matchesCol.getVertices()
+      .filter(new BoundVertices(production));
+
+    DataSet<Edge> boundEdges = matchesCol.getEdges()
+      .filter(new BoundEdges(production));
+
+    GraphCollection boundMatches = GraphCollection.fromDataSets(matchesCol
+      .getGraphHeads(), boundVertices, boundEdges, config);
+
+    DataSet<GraphTransaction> matchTrans = boundMatches
       .toTransactions().getTransactions();
 
     DataSet<GraphTransaction> transactions = matchTrans
