@@ -89,6 +89,70 @@ public class ProjectionTest extends GradoopFlinkTestBase {
           "(v2)-->(v3)" +
           "]",
         null
+      },
+      {
+        "FirstEdgeCases", GRAPH_5, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "()-->()" +
+          "]",
+        null
+      },
+      {
+        "SecondEdgeCases", GRAPH_6, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "()-->(v1)" +
+          "]",
+        null
+      },
+      {
+        "ThirdEdgeCases", GRAPH_7, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "(v0)-->()" +
+          "]",
+        null
+      },
+      {
+        "FourthEdgeCases", GRAPH_8, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "(v0)-->(v1)" +
+          "]",
+        null
+      },
+      {
+        "FifththEdgeCases", GRAPH_9, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "()-[e1]  ->()" +
+          "]",
+        IllegalStateException.class
+      },
+      {
+        "SixthEdgeCases", GRAPH_10, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "()-[e1]->(v1)" +
+          "]",
+        IllegalStateException.class
+      },
+      {
+        "SeventhEdgeCases", GRAPH_11, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "(v0)-[e1]->()" +
+          "]",
+        IllegalStateException.class
+      },
+      {
+        "EightthEdgeCases", GRAPH_12, PATTERN_3,
+        new String[] {"expected1"},
+        "expected1[" +
+          "(v0)-[e1]->(v1)" +
+          "]",
+        null
       }
     });
   }
