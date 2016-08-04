@@ -58,8 +58,8 @@ public class ExtendTransaction
 
       if (vertexVars.remove(binding)) {
         boundVertexIds.add(v.getId());
+        vertices.put(binding, v);
       }
-      vertices.put(binding, v);
     }
 
     for (String var : vertexVars) {
