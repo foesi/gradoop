@@ -20,7 +20,7 @@ import java.util.Map;
 import static org.gradoop.flink.model.impl.operators.projection.TestData.*;
 
 /**
- * Base class for Pattern Matching Te2sts.
+ * Test class for Projection tests.
  */
 @RunWith(Parameterized.class)
 public class ProjectionTest extends GradoopFlinkTestBase {
@@ -169,6 +169,8 @@ public class ProjectionTest extends GradoopFlinkTestBase {
 
     Map<String, GradoopId> graphHeadIds = Maps.newHashMap();
 
+    // Map which translates placeholder Ids from GraphHerads to actual
+    // GradoopIds
     for (GraphHead gh : loader.getGraphHeads()) {
       PropertyValue id = gh.getPropertyValue("id");
       if (id != null) {
@@ -180,6 +182,8 @@ public class ProjectionTest extends GradoopFlinkTestBase {
     elements.addAll(loader.getVertices());
     elements.addAll(loader.getEdges());
 
+
+    // Replace simple GradoopId placeholders
     for (GraphElement e : elements) {
       String finalBinding = "";
       PropertyValue bindings = e.getProperties().get(BINDINGS);
