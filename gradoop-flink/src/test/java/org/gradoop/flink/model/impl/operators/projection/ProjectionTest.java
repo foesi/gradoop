@@ -194,7 +194,9 @@ public class ProjectionTest extends GradoopFlinkTestBase {
           finalBinding += split.split(":")[1];
           finalBinding += ",";
         }
-        finalBinding = finalBinding.substring(0, finalBinding.length()-1);
+        if (finalBinding.endsWith(",")) {
+          finalBinding = finalBinding.substring(0, finalBinding.length()-1);
+        }
         e.setProperty(BINDINGS, finalBinding);
       }
     }
