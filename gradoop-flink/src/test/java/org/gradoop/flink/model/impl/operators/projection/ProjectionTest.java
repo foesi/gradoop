@@ -8,6 +8,7 @@ import org.gradoop.common.model.impl.pojo.GraphHead;
 import org.gradoop.common.model.impl.properties.PropertyValue;
 import org.gradoop.flink.model.GradoopFlinkTestBase;
 import org.gradoop.flink.util.FlinkAsciiGraphLoader;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -198,8 +199,18 @@ public class ProjectionTest extends GradoopFlinkTestBase {
         loader.getGraphCollectionByVariables(TestData.DATA_GRAPH_VARIABLE),
         productionGraph, config, BINDINGS);
 
-    // execute and validate
-    collectAndAssertTrue(projection.execute(null).equalsByGraphElementData(
-      loader.getGraphCollectionByVariables(expectedGraphVariables)));
+    try {
+      // execute and validate
+      collectAndAssertTrue(projection.execute(null).equalsByGraphElementData(
+        loader.getGraphCollectionByVariables(expectedGraphVariables)));
+      if (expectedException != null) {
+        Assert.fail("The test should fail with: "
+          + expectedException.getSimpleName());
+      }
+    } catch (Exception e) {
+      Assert.assertEquals("The test should fail with: "
+        + expectedException.getSimpleName(),
+        expectedException, e.getCause().getClass());
+    }
   }
 }
