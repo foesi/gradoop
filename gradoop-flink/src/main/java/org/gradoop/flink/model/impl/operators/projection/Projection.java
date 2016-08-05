@@ -35,8 +35,7 @@ import org.gradoop.flink.model.impl.operators.matching.isomorphism
 import org.gradoop.flink.model.impl.operators.projection.common
   .BindingExtractor;
 import org.gradoop.flink.model.impl.operators.projection.functions.BoundEdges;
-import org.gradoop.flink.model.impl.operators.projection.functions
-  .BoundVertices;
+import org.gradoop.flink.model.impl.operators.projection.functions.BoundGraphElements;
 import org.gradoop.flink.model.impl.operators.projection.functions
   .ExtendTransaction;
 import org.gradoop.flink.model.impl.tuples.GraphTransaction;
@@ -138,10 +137,10 @@ public class Projection
     // filter unbound vertices and edges so only bound ones are forwarded to
     // the toTransaction method
     DataSet<Vertex> boundVertices = matchesCol.getVertices()
-      .filter(new BoundVertices(production));
+      .filter(new BoundGraphElements<Vertex>(production));
 
     DataSet<Edge> boundEdges = matchesCol.getEdges()
-      .filter(new BoundEdges(production));
+      .filter(new BoundGraphElements<Edge>(production));
 
     GraphCollection boundMatches = GraphCollection.fromDataSets(matchesCol
       .getGraphHeads(), boundVertices, boundEdges, config);

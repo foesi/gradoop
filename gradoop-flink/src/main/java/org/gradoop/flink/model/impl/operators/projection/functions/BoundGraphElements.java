@@ -17,15 +17,17 @@
 
 package org.gradoop.flink.model.impl.operators.projection.functions;
 
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.gradoop.common.model.impl.pojo.Vertex;
+import org.apache.flink.api.common.functions.RichFilterFunction;
+import org.apache.flink.configuration.Configuration;
+import org.gradoop.common.model.impl.pojo.GraphElement;
 import org.gradoop.flink.model.impl.operators.projection.common
   .BindingExtractor;
 
 /**
- * Filter Function for bound Vertices
+ * Filter Function for bound Graph Elements
  */
-public class BoundVertices implements FilterFunction<Vertex> {
+public class BoundGraphElements<T extends GraphElement>
+  extends RichFilterFunction<T> {
 
   /**
    * Production Pattern to get bound variables
@@ -33,15 +35,24 @@ public class BoundVertices implements FilterFunction<Vertex> {
   private final String productionPattern;
 
   /**
+   * Binding Extractor for the Production Pattern
+   */
+  private BindingExtractor extractor;
+
+  /**
    * @param production Production Pattern
    */
-  public BoundVertices(final String production) {
+  public BoundGraphElements(final String production) {
     this.productionPattern = production;
   }
 
   @Override
-  public boolean filter(Vertex vertex) throws Exception {
-    return new BindingExtractor(productionPattern)
-      .getBindings(vertex).isEmpty();
+  public void open(Configuration parameters) throws Exception {
+    this.extractor = new BindingExtractor(productionPattern);
+  }
+
+  @Override
+  public boolean filter(T graphElement) throws Exception {
+    return extractor.getBindings(graphElement).isEmpty();
   }
 }
